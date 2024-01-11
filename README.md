@@ -1,6 +1,6 @@
-#MovieBiz
+*MovieBiz*
 
-##Features
+Features
 1. Jetpack Compose
 2. Hilt
 3. Retrofit
