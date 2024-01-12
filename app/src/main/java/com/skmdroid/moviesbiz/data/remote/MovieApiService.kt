@@ -1,6 +1,5 @@
-package com.skmdroid.moviesbiz
+package com.skmdroid.moviesbiz.data.remote
 
-import com.skmdroid.moviesbiz.model.PopularMovies
 import retrofit2.http.GET
 
 interface MovieApiService {

@@ -1,5 +1,6 @@
 package com.skmdroid.moviesbiz.presentation.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,18 +13,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -46,11 +55,31 @@ import com.skmdroid.moviesbiz.R
 import com.skmdroid.moviesbiz.presentation.viewmodels.MainViewModel
 import com.skmdroid.moviesbiz.util.Constants
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen(navController: NavController) {
+    val context = LocalContext.current
     val movieViewModel: MainViewModel = hiltViewModel()
     val movies by movieViewModel.movies.collectAsState()
+    val refreshing by movieViewModel.isRefreshing.collectAsState()
+    val loading by movieViewModel.loading.collectAsState()
+    val pullRefreshState = rememberPullRefreshState(refreshing, { movieViewModel.refresh() })
+
+    LaunchedEffect(Unit) {
+
+        movieViewModel
+            .error
+            .collect { message ->
+                message?.let {
+                    Toast.makeText(
+                        context,
+                        it,
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -60,25 +89,44 @@ fun MainScreen(navController: NavController) {
             )
         },
         content = { innerPadding ->
-            LazyVerticalGrid(
-                modifier = Modifier.padding(innerPadding),
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(
-                    start = 12.dp,
-                    top = 16.dp,
-                    end = 12.dp,
-                    bottom = 16.dp,
-                ),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(movies) { movie ->
-                    ImageCard(
-                        title = movie.title,
-                        url = "${Constants.BASE_URL_IMAGE_ORIGINAL}${movie.backdropPath}",
-                        votes = movie.voteAverage,
-                        navController = navController,
-                        id = movie.id
+            Box(Modifier.pullRefresh(pullRefreshState)) {
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize(),
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(
+                        start = 12.dp,
+                        top = 16.dp,
+                        end = 12.dp,
+                        bottom = 16.dp,
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(movies) { movie ->
+                        ImageCard(
+                            title = movie.title,
+                            url = "${Constants.BASE_URL_IMAGE_ORIGINAL}${movie.backdropPath}",
+                            votes = movie.voteAverage,
+                            navController = navController,
+                            id = movie.id
+                        )
+                    }
+                }
+
+                PullRefreshIndicator(
+                    refreshing = refreshing,
+                    state = pullRefreshState,
+                    Modifier.align(Alignment.TopCenter)
+                )
+
+                if (loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .width(64.dp)
+                            .align(Alignment.Center),
+                        color = MaterialTheme.colorScheme.secondary,
                     )
                 }
             }

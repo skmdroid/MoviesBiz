@@ -1,4 +1,4 @@
-package com.skmdroid.moviesbiz.model
+package com.skmdroid.moviesbiz.data.remote
 
 
 import com.google.gson.annotations.SerializedName

@@ -1,4 +1,4 @@
-package com.skmdroid.moviesbiz.db
+package com.skmdroid.moviesbiz.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

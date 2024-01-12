@@ -1,11 +1,10 @@
 package com.skmdroid.moviesbiz.presentation.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.skmdroid.moviesbiz.MovieRepository
-import com.skmdroid.moviesbiz.model.Result
+import com.skmdroid.moviesbiz.data.remote.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

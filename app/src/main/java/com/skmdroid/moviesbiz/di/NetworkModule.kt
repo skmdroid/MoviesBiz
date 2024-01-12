@@ -1,7 +1,7 @@
 package com.skmdroid.moviesbiz.di
 
 import com.skmdroid.moviesbiz.BuildConfig
-import com.skmdroid.moviesbiz.MovieApiService
+import com.skmdroid.moviesbiz.data.remote.MovieApiService
 import com.skmdroid.moviesbiz.util.Constants
 import dagger.Module
 import dagger.Provides

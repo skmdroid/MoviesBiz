@@ -1,4 +1,4 @@
-package com.skmdroid.moviesbiz.ui.theme
+package com.skmdroid.moviesbiz.presentation.ui
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

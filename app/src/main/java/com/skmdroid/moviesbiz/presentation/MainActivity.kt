@@ -3,8 +3,7 @@ package com.skmdroid.moviesbiz.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.skmdroid.moviesbiz.presentation.ui.MainScreen
-import com.skmdroid.moviesbiz.ui.theme.MoviesBizTheme
+import com.skmdroid.moviesbiz.presentation.ui.MoviesBizTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

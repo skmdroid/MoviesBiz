@@ -1,4 +1,4 @@
-package com.skmdroid.moviesbiz.ui.theme
+package com.skmdroid.moviesbiz.presentation.ui
 
 import androidx.compose.ui.graphics.Color
 

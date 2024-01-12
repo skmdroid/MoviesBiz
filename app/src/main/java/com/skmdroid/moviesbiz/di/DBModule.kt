@@ -2,7 +2,7 @@ package com.skmdroid.moviesbiz.di
 
 import android.content.Context
 import androidx.room.Room
-import com.skmdroid.moviesbiz.db.AppDatabase
+import com.skmdroid.moviesbiz.data.local.AppDatabase
 import com.skmdroid.moviesbiz.PopularMovieDao
 import dagger.Module
 import dagger.Provides
